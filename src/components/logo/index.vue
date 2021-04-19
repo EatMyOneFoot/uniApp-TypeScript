@@ -8,7 +8,7 @@
     <view @tap="$u.throttle(click, 1000, true)">
       <u-icon name="fingerprint"></u-icon>
       <text class="title">{{ title }}</text>
-      <text class="title">{{ UserInfo.name }}</text>
+      <text class="title">{{ text }}</text>
     </view>
   </view>
 </template>
@@ -22,9 +22,7 @@ import { UserModule } from "@/store/modules/user";
 })
 export default class logo extends Vue {
   @Prop({ default: "" }) private title!: string;
-  get UserInfo() {
-    return UserModule;
-  }
+
   mounted() {
     UserModule.setState({ state: "name", value: "稳住哦" });
     console.log("mounted==>", UserModule.name);
@@ -32,9 +30,15 @@ export default class logo extends Vue {
       UserModule.setState({ state: "name", value: "别浪" });
     }, 2 * 1000);
   }
+
+  get text() {
+    return UserModule.name;
+  }
+
   private btnAClick() {
     console.log("防抖，3秒==>", "别人封装好的用起来还是香啊");
   }
+
   private click() {
     console.log("节流，1秒==>", "别人封装好的用起来还是香啊");
   }
