@@ -1,3 +1,5 @@
+// #ifdef H5
+// 仅在H5平台编译
 export const ua: any = navigator.userAgent.toLowerCase();
 // 是否是微信浏览器
 export const isWeiXin = () => {
@@ -22,7 +24,7 @@ export const isPC = () => {
 	}
 	return flag;
 };
-
+// #endif
 // 严格的身份证校验
 export const isCardID = (sId: any) => {
 	if (!/(^\d{15}$)|(^\d{17}(\d|X|x)$)/.test(sId)) {
@@ -106,3 +108,42 @@ export const numberToChinese = (num: any) => {
 	if (re.match(/^一/) && re.length == 3) re = re.replace('一', '');
 	return re;
 };
+
+// #ifdef MP-WEIXIN
+// 微信小程序线上版本检查更新管理器
+export const WeChatUpdateManager = () => {
+	const updateManager = uni.getUpdateManager();
+	updateManager.onCheckForUpdate((res) => {
+		// 请求完新版本信息的回调
+		if (res.hasUpdate) {
+			updateManager.onUpdateReady((res2) => {
+				uni.showModal({
+					title: "更新提示",
+					content: "发现新版本，是否重启应用?",
+					cancelColor: "#eeeeee",
+					confirmColor: "#FF0000",
+					success(res2) {
+						if (res2.confirm) {
+							// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+							updateManager.applyUpdate();
+						}
+					},
+				});
+			});
+		}
+	});
+	updateManager.onUpdateFailed((res) => {
+		// 新的版本下载失败
+		uni.showModal({
+			title: "提示",
+			content: "检查到有新版本，但下载失败，请检查网络设置",
+			success(res) {
+				if (res.confirm) {
+					// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+					updateManager.applyUpdate();
+				}
+			},
+		});
+	});
+};
+// #endif
