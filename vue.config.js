@@ -6,7 +6,7 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: 'https://waterproof.gzyxxy.com',
+        target: 'http://localhost',
         changeOrigin: true, // needed for virtual hosted sites
         ws: false, // proxy websockets
         pathRewrite: {

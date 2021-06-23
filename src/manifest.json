@@ -40,13 +40,13 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         },
         /* SDK配置 */
-        "usingComponents" : true,
-        "compatible" : {}
+        "usingComponents" : true
     },
-    // "ignoreVersion": true //true表示忽略版本检查提示框，HBuilderX1.9.0及以上版本支持
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
@@ -70,13 +70,5 @@
     },
     "mp-qq" : {
         "usingComponents" : true
-    },
-    "h5" : {
-        "optimization" : {
-            "treeShaking" : {
-                "enable" : true
-            }
-        },
-        "title" : "uni-app"
     }
 }

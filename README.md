@@ -1,4 +1,4 @@
-## 总览
+## Overview
 
 [vue-typescript-uniapp](https://github.com/EatMyOneFoot/vue-typescript-uniapp) 是 UNI-APP 前端解决方案的一个十分简单的基础模版, 它基于 [vue](https://github.com/vuejs/vue), [typescript](https://www.typescriptlang.org/) 和 [uView-ui](http://www.uviewui.com/components/intro.html)实现。
 
@@ -16,6 +16,7 @@
     <img src="https://img.shields.io/badge/uView-1.8.3-brightgreen.svg" alt="uView-ui">
   </a>
 </p>
+
 
 ## Project Structure
 
@@ -59,3 +60,9 @@ yarn serve
 ```
 yarn build
 ```
+
+## Problem
+
+* 因为项目是使用vue-cli创建的，所以打包App的时候可能会出现弹窗提示："当前项目的cli版本和云打包服务器的cli版本不一致，有可能出现兼容性问题请升级项目的cli版本后重新打包或继续打包"
+  * [DCloud 社区给的解决方法](https://ask.dcloud.net.cn/article/35627)
+  * 我一般是直接批量修改 package.json 中 uni 相关依赖为指定的版本号('^2.0.0-31420210305001' 改为对应的版本号) 然后重新 yarn install
