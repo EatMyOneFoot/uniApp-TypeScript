@@ -1,17 +1,24 @@
 // #ifdef H5
 // 仅在H5平台编译
-export const ua: any = navigator.userAgent.toLowerCase();
-// 是否是微信浏览器
+const ua: any = navigator.userAgent.toLowerCase();
+
+/**
+ * 是否是微信浏览器
+ */
 export const isWeiXin = () => {
 	return ua.match(/microMessenger/i) == 'micromessenger';
 };
 
-// 是否是移动端
+/**
+ * 是否是移动端
+ */
 export const isDeviceMobile = () => {
 	return /android|webos|iphone|ipod|balckberry/i.test(ua);
 };
 
-// 是否为PC端
+/**
+ * 是否为PC端
+ */
 export const isPC = () => {
 	let userAgentInfo = navigator.userAgent;
 	let Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
@@ -25,7 +32,18 @@ export const isPC = () => {
 	return flag;
 };
 // #endif
-// 严格的身份证校验
+
+/**
+ * 返回客户端平台
+ * @returns 值域为：ios、android、mac（3.1.10+）、windows（3.1.10+）、linux（3.1.10+）
+ */
+export const platform = () => {
+	return uni.getSystemInfoSync().platform
+}
+
+/**
+ * @returns 严格的身份证校验
+ */
 export const isCardID = (sId: any) => {
 	if (!/(^\d{15}$)|(^\d{17}(\d|X|x)$)/.test(sId)) {
 		uni.showToast({
@@ -39,10 +57,9 @@ export const isCardID = (sId: any) => {
 
 /**
  * 时间戳格式化，转日期
- * parameter
- * time：要格式化的时间戳，秒或者毫秒级时间戳
- * format：指定需要返回的时间格式('yyyy-MM-dd'==>'2021-01-01','yyyy年MM月dd日 hh时mm分ss秒'==>'2021年01月01日 00时00分00秒',不传则返回空值)
- * 举个栗子：formatTime(1615116430, "yyyy-MM-dd hh:mm:ss")
+ * @params time：要格式化的时间戳，秒或者毫秒级时间戳
+ * @params format：指定需要返回的时间格式('yyyy-MM-dd'==>'2021-01-01','yyyy年MM月dd日 hh时mm分ss秒'==>'2021年01月01日 00时00分00秒',不传则返回空值)
+ * @tip 举个栗子：formatTime(1615116430, "yyyy-MM-dd hh:mm:ss")
  */
 export const formatTime = (time: any, format: string) => {
 	if (!format) {
@@ -73,7 +90,9 @@ export const formatTime = (time: any, format: string) => {
 	return format;
 };
 
-// 将阿拉伯数字翻译成中文的大写数字，带单位
+/**
+ * @returns 将阿拉伯数字翻译成中文的大写数字，带单位
+ */
 export const numberToChinese = (num: any) => {
 	let AA = new Array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十');
 	let BB = new Array('', '十', '百', '仟', '萬', '億', '点', '');
@@ -110,7 +129,9 @@ export const numberToChinese = (num: any) => {
 };
 
 // #ifdef MP-WEIXIN
-// 微信小程序线上版本检查更新管理器
+/**
+ * @returns 微信小程序线上版本检查更新管理器
+ */
 export const WeChatUpdateManager = () => {
 	const updateManager = uni.getUpdateManager();
 	updateManager.onCheckForUpdate((res) => {
@@ -147,3 +168,34 @@ export const WeChatUpdateManager = () => {
 	});
 };
 // #endif
+
+/**
+ * @returns 将byte[] 转为Hex
+ */
+ export const Bytes2HexString = (arrBytes: any) => {
+	var str = '';
+	for (var i = 0; i < arrBytes.length; i++) {
+		var tmp;
+		var num = arrBytes[i];
+		if (num < 0) {
+			//Java中数值是以补码的形式存在的，应用程序展示的十进制是补码对应真值。补码的存在主要为了简化计算机底层的运算，将减法运算直接当加法来做
+			tmp = (255 + num + 1).toString(16);
+		} else {
+			tmp = num.toString(16);
+		}
+		if (tmp.length == 1) {
+			tmp = '0' + tmp;
+		}
+		str += tmp;
+	}
+	return str;
+};
+
+/**
+ * @returns 获取当前页面路由，也就是最后一个打开的页面路由
+ */
+export const currentRoute = () => {
+	// 获取当前打开过的页面路由数组
+	let routes = getCurrentPages();
+	return routes[routes.length - 1].route;
+};
