@@ -1,4 +1,4 @@
-import { platform, Bytes2HexString, currentRoute, formatTime } from '@/utils/common';
+import { platform, currentRoute } from '@/utils/common';
 import { UserModule } from "@/store/modules/user";
 import { NfcModule } from "@/store/modules/nfc";
 import { } from '@/api/index'
@@ -16,12 +16,12 @@ let iosNfcModule: any = uni.requireNativePlugin("yzy-YzyNfcTagRead")
  */
 export default {
     /**
-     * @NFCInit 初始化NFC
+     * 初始化NFC
      */
     NFCInit() {
-        console.log('--------------NFCInit--------------')
         // 未登录就return掉
         if (!UserModule.token) return
+        console.log('--------------NFCInit--------------')
         if (platform() === 'android') {
             try {
                 main = plus.android.runtimeMainActivity();
@@ -94,10 +94,11 @@ export default {
                 //TODO handle the exception
             }
         } else if (platform() === 'ios') {
+            // ios 这边的Nfc还没有设备拿来测试，不过打过测试包让别人试过是能读取到和android一样的数据的
             // 调用异步方法
             iosNfcModule.NdefNfcReadAsyncFunc({
                 name: 'yzyzuishuai', // name字段是固定的
-                doWrite: NfcModule.readyWriteData, // true代表写入 false代表只读
+                doWrite: false, // true代表写入 false代表只读
             }, (res: any) => {
                 // res.type为0的情况下res.msg为错误消息，type为1的情况下msg为tag值
                 console.log(res)
@@ -107,7 +108,7 @@ export default {
     },
 
     /**
-     * @nfcRuning 启动Nfc进行读写
+     * 启动Nfc进行读写
      */
     nfcRuning() {
         if (!UserModule.token) return
@@ -140,7 +141,8 @@ export default {
     },
 
     /**
-     * @write 写入Nfc
+     * 写入Nfc
+     * 还没有试过写入的...因为用的别人的nfc标签测试的,他们没有写数据的需求,乱写东西进去怕拖打 =_=
      */
     write(intent: any) {
         console.log("--------------我在写--------------")
@@ -197,7 +199,7 @@ export default {
     },
 
     /**
-     * @read 读取Nfc
+     * 读取Nfc
      */
     read(intent: any) {
         console.log("--------------我在读--------------")
@@ -228,22 +230,51 @@ export default {
 
         // 如果读到了数据
         if (!!NfcModule.readResult) {
-            // currentRoute 返回当前读取数据的页面路由
-            // if (currentRoute() == 'pages/index/index') {
-            //     uni.navigateTo({
-            //         url: '/pages/index/nfcDetail',
-            //     });
-            // } else {
-            //     uni.redirectTo({
-            //         url: '/pages/index/nfcDetail',
-            //     });
-            // }
+            jump()
         }
     }
 }
 
 /**
- * @轻提示 uni.showToas
+ * 将byte[] 转为Hex
+ * @returns Hex
+ */
+const Bytes2HexString = (arrBytes: any) => {
+    var str = '';
+    for (var i = 0; i < arrBytes.length; i++) {
+        var tmp;
+        var num = arrBytes[i];
+        if (num < 0) {
+            //Java中数值是以补码的形式存在的，应用程序展示的十进制是补码对应真值。补码的存在主要为了简化计算机底层的运算，将减法运算直接当加法来做
+            tmp = (255 + num + 1).toString(16);
+        } else {
+            tmp = num.toString(16);
+        }
+        if (tmp.length == 1) {
+            tmp = '0' + tmp;
+        }
+        str += tmp;
+    }
+    return str;
+};
+
+/**
+ * 跳转到产品信息页面
+ */
+const jump = () => {
+    let navigate: string = 'navigateTo'
+    if (currentRoute() !== 'pages/index/index') {
+        navigate = 'redirectTo'
+    }
+    (uni as any)[navigate]({
+        url: '/pages/index/nfcDetail',
+    });
+}
+
+/**
+ * 轻提示 uni.showToas
+ * @param {string} content 提示内容
+ * @param {string} type 提示类型
  */
 const toast = (content: string, type: "none" | "success" | "loading" | undefined) => {
     uni.showToast({

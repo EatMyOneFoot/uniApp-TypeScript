@@ -38,17 +38,19 @@ class Nfc extends VuexModule implements INfcState {
 	public goodsInfo: any = ''
 
 	/**
-	 * @Mutation 设置store数据
+	 * 设置store数据
+	 * @Mutation
+	 * @param {Array|Object} data {state: 'key',value: data}
 	 */
 	@Mutation
-	public setState(value: any) {
+	public setState(data: any) {
 		let arr = []
-		if (Object.prototype.toString.call(value) === "[object Array]") {
-			// console.log('value是数组');
-			arr = value
-		} else if (Object.prototype.toString.call(value) === '[object Object]') {
-			// console.log('value是对象');
-			arr.push(value)
+		if (Object.prototype.toString.call(data) === "[object Array]") {
+			// console.log('data是数组');
+			arr = data
+		} else if (Object.prototype.toString.call(data) === '[object Object]') {
+			// console.log('data是对象');
+			arr.push(data)
 		}
 		arr.forEach((obj: any) => {
 			(this as any)[obj.state] = obj.value;
@@ -57,6 +59,7 @@ class Nfc extends VuexModule implements INfcState {
 }
 
 /**
- * @NfcModule NFC模块
+ * NFC模块
+ * @NfcModule
  */
 export const NfcModule = getModule(Nfc);

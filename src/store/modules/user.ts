@@ -1,6 +1,6 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
 import { login, logout } from '@/api/users';
-import { getToken, setToken, removeToken } from '@/utils/storage';
+import { setStorage, getStorage, removeStorage } from '@/utils/storage';
 import store from '@/store';
 
 export interface IUserState {
@@ -15,7 +15,7 @@ export interface IUserState {
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-	public token = getToken() || '';
+	public token = getStorage('access_token') || '';
 	public code = '';
 	public type = '';
 	public name = '';
@@ -30,7 +30,7 @@ class User extends VuexModule implements IUserState {
 	public async Login(loginInfo: object) {
 		const { data } = await login(loginInfo);
 		// console.log(data)
-		setToken(data.token);
+		setStorage('access_token', data.token)
 		this.setState({ state: 'token', value: data.token });
 		// this.setState({ state: 'type', value: data.type });
 		// console.log(data)
@@ -41,7 +41,7 @@ class User extends VuexModule implements IUserState {
 
 	@Action
 	public ResetToken() {
-		removeToken();
+		removeStorage('access_token');
 		this.setState({ state: 'token', value: '' });
 	}
 
@@ -67,7 +67,7 @@ class User extends VuexModule implements IUserState {
 		}
 		// await logout();
 		// 清空本地缓存的 token
-		removeToken();
+		removeStorage('access_token');
 		this.setState({ state: 'token', value: '' });
 	}
 

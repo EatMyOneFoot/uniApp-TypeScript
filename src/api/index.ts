@@ -1,6 +1,7 @@
 import http from "@/utils/request";
-
-// 分类列表
+/**
+ * 分类列表
+ */
 export const itemList = (params: any) =>
   http.request({
     url: "/user/itemList",
@@ -8,7 +9,9 @@ export const itemList = (params: any) =>
     params
   });
 
-// 关闭订单
+/**
+ * 关闭订单
+ */
 export const cancelOrder = (data: any) =>
   http.request({
     url: "/user/cancelOrder",

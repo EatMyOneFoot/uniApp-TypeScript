@@ -42,7 +42,8 @@ export const platform = () => {
 }
 
 /**
- * @returns 严格的身份证校验
+ * 严格的身份证校验
+ * @param {number|string} sId 身份证号码
  */
 export const isCardID = (sId: any) => {
 	if (!/(^\d{15}$)|(^\d{17}(\d|X|x)$)/.test(sId)) {
@@ -57,8 +58,8 @@ export const isCardID = (sId: any) => {
 
 /**
  * 时间戳格式化，转日期
- * @params time：要格式化的时间戳，秒或者毫秒级时间戳
- * @params format：指定需要返回的时间格式('yyyy-MM-dd'==>'2021-01-01','yyyy年MM月dd日 hh时mm分ss秒'==>'2021年01月01日 00时00分00秒',不传则返回空值)
+ * @param {number|string} time 要格式化的时间戳，秒或者毫秒级时间戳
+ * @param {string} format 指定需要返回的时间格式('yyyy-MM-dd'==>'2021-01-01','yyyy年MM月dd日 hh时mm分ss秒'==>'2021年01月01日 00时00分00秒',不传则返回空值)
  * @tip 举个栗子：formatTime(1615116430, "yyyy-MM-dd hh:mm:ss")
  */
 export const formatTime = (time: any, format: string) => {
@@ -91,7 +92,7 @@ export const formatTime = (time: any, format: string) => {
 };
 
 /**
- * @returns 将阿拉伯数字翻译成中文的大写数字，带单位
+ * 将阿拉伯数字翻译成中文的大写数字，带单位
  */
 export const numberToChinese = (num: any) => {
 	let AA = new Array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十');
@@ -130,7 +131,7 @@ export const numberToChinese = (num: any) => {
 
 // #ifdef MP-WEIXIN
 /**
- * @returns 微信小程序线上版本检查更新管理器
+ * 微信小程序线上版本检查更新管理器
  */
 export const WeChatUpdateManager = () => {
 	const updateManager = uni.getUpdateManager();
@@ -170,29 +171,7 @@ export const WeChatUpdateManager = () => {
 // #endif
 
 /**
- * @returns 将byte[] 转为Hex
- */
- export const Bytes2HexString = (arrBytes: any) => {
-	var str = '';
-	for (var i = 0; i < arrBytes.length; i++) {
-		var tmp;
-		var num = arrBytes[i];
-		if (num < 0) {
-			//Java中数值是以补码的形式存在的，应用程序展示的十进制是补码对应真值。补码的存在主要为了简化计算机底层的运算，将减法运算直接当加法来做
-			tmp = (255 + num + 1).toString(16);
-		} else {
-			tmp = num.toString(16);
-		}
-		if (tmp.length == 1) {
-			tmp = '0' + tmp;
-		}
-		str += tmp;
-	}
-	return str;
-};
-
-/**
- * @returns 获取当前页面路由，也就是最后一个打开的页面路由
+ * 获取当前页面路由，也就是最后一个打开的页面路由
  */
 export const currentRoute = () => {
 	// 获取当前打开过的页面路由数组
