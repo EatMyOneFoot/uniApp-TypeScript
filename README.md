@@ -68,6 +68,6 @@ yarn build
 ## Problem
 
 * 因为项目是使用vue-cli创建的，所以打包App的时候可能会出现弹窗提示："当前项目的cli版本和云打包服务器的cli版本不一致，有可能出现兼容性问题请升级项目的cli版本后重新打包或继续打包"
-  * <img width="320px" height="240px" src="./src/static/20210703110525.png">
+  * <img width="320px" height="240px" src="https://github.com/EatMyOneFoot/uniApp-TypeScript/blob/master/src/static/20210703110525.png">
   * [DCloud 社区给的解决方法](https://ask.dcloud.net.cn/article/35627)
   * 我一般是直接批量修改 package.json 中 uni 相关依赖为指定的版本号('^2.0.0-31420210305001' 改为对应的版本号) 然后重新 yarn install
