@@ -2,19 +2,10 @@
   <view>
     <!-- logo -->
     <logo :title="title" />
-    <view v-if="!!readResult">readResult: {{ readResult }}</view>
     <!-- #ifdef APP-PLUS -->
+    <view v-if="!!readResult">readResult: {{ readResult }}</view>
     <!-- 开启nfc读卡的按钮，条件编译 + 仅IOS端显示 -->
-    <drag-button @onChange="onChange" @onTouchend="onTouchend">
-      <view
-        class="drag-button u-flex u-row-center"
-        :style="dragStyle"
-        @tap="readNfc"
-        v-if="show"
-      >
-        <u-icon :name="nfc_white" color="#ffffff" size="36"></u-icon>
-      </view>
-    </drag-button>
+    <drag-button @onClick="onClick" :buttonList="buttonList" v-if="show" />
     <!-- #endif -->
   </view>
 </template>
@@ -25,9 +16,11 @@ import logo from "@/components/logo/index.vue";
 import dragButton from "@/components/dragButton/index.vue";
 import { itemList } from "@/api/index";
 import { formatTime, platform } from "@/utils/common";
+// #ifdef APP-PLUS
 import { NfcModule } from "@/store/modules/nfc";
 import NFC from "@/utils/nfc";
-import nfc_white from "@/static/icons/nfc_white.png";
+// #endif
+import nfc_black from "@/static/icons/nfc_black.png";
 @Component({
   name: "index",
   components: {
@@ -58,9 +51,11 @@ export default class Index extends Vue {
     // #endif
   }
 
+  // #ifdef APP-PLUS
   get readResult() {
     return NfcModule.readResult;
   }
+  // #endif
 
   private init() {
     console.log("init==>", 66666);
@@ -74,27 +69,19 @@ export default class Index extends Vue {
   }
 
   /* ------------drag-button------------ */
-  get nfc_white() {
-    return nfc_white;
+  get nfc_black() {
+    return nfc_black;
   }
   // 控制nfc读卡的按钮显示
   private show = true;
 
-  private dragStyle = {
-    borderRadius: "50% 0 0 50%",
-  };
-
-  private onChange(e: any) {
-    this.$set(this.dragStyle, "borderRadius", "50%");
-  }
-
-  private onTouchend(obj: any) {
-    if (obj.x < obj.num) {
-      this.$set(this.dragStyle, "borderRadius", "0 50% 50% 0");
-    } else {
-      this.$set(this.dragStyle, "borderRadius", "50% 0 0 50%");
-    }
-  }
+  private buttonList = [
+    {
+      name: "读卡",
+      icon: nfc_black,
+      handleClick: this.readNfc,
+    },
+  ];
 
   /**
    * 开启读nfc卡
@@ -103,21 +90,12 @@ export default class Index extends Vue {
     console.log("开启读nfc卡");
     NFC.NFCInit();
   }
+
+  private onClick(item: any) {
+    item.handleClick();
+  }
 }
 </script>
 
 <style scoped lang="scss">
-.drag-button {
-  width: 100rpx;
-  height: 100rpx;
-  padding: 15rpx;
-  background-color: #073f5a;
-  // border-radius: 50% 0 0 50%;
-  transition-property: border-radius;
-  transition-duration: 0.1s;
-
-  &:active {
-    opacity: 0.8;
-  }
-}
 </style>
