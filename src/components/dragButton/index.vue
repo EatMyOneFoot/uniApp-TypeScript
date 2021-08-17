@@ -132,7 +132,7 @@ export default class DragButton extends Vue {
   /**
    * 用于控制movable-view组件重绘
    * 由于微信小程序端点击展开按钮列表之后，组件宽度发生变化，会把右侧内容挤出屏幕外
-   * v-if重新渲染一下可以解决问题
+   * v-if重新渲染一下可以解决问题，注意app和h5端用v-if会出问题，所以需要用条件编译
    */
   private redraw = true;
 
@@ -159,18 +159,24 @@ export default class DragButton extends Vue {
       this.$set(this.axis, "y", this.newValue.yAxis);
     }
     let x = this.axis.x;
-    this.redraw = false;
+    // #ifdef MP-WEIXIN
+    this.$set(this, "redraw", false);
+    // #endif
     if (x > num || x == num) {
       // 防止组件属性设置不生效
       this.$set(this.axis, "x", this.screenWidth + 0.01);
       this.$nextTick(() => {
-        this.redraw = true;
+        // #ifdef MP-WEIXIN
+        this.$set(this, "redraw", true);
+        // #endif
         this.$set(this.axis, "x", this.screenWidth);
       });
     } else {
       this.$set(this.axis, "x", -1);
       this.$nextTick(() => {
-        this.redraw = true;
+        // #ifdef MP-WEIXIN
+        this.$set(this, "redraw", true);
+        // #endif
         this.$set(this.axis, "x", 0);
       });
     }
@@ -220,7 +226,7 @@ export default class DragButton extends Vue {
 
 <style lang="scss" scoped>
 .fixed-box {
-  pointer-events: none; // 这里是重点，盒子可穿透操作
+  pointer-events: none; // 盒子可穿透操作
   width: 100vw;
   height: 100vh;
   position: fixed;
