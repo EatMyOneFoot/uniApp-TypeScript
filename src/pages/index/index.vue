@@ -1,7 +1,7 @@
 <template>
   <view>
     <!-- logo -->
-    <logo :title="title" />
+    <logo v-model="title" />
     <!-- #ifdef APP-PLUS -->
     <view v-if="!!readResult">readResult: {{ readResult }}</view>
     <!-- 开启nfc读卡的按钮，条件编译 + 仅IOS端显示 -->
@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import logo from "@/components/logo/index.vue";
-import dragButton from "@/components/dragButton/index.vue";
+import DragButton from "@/components/dragButton/index.vue";
 import { itemList } from "@/api/index";
 import { formatTime, platform } from "@/utils/common";
 // #ifdef APP-PLUS
@@ -25,7 +25,7 @@ import nfc_black from "@/static/icons/nfc_black.png";
   name: "index",
   components: {
     logo,
-    dragButton,
+    DragButton,
   },
 })
 export default class Index extends Vue {

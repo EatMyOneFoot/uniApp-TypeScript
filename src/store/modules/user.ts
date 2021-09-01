@@ -22,8 +22,18 @@ class User extends VuexModule implements IUserState {
 	public avatar = '';
 
 	@Mutation
-	public setState(obj: any) {
-		(this as any)[obj.state] = obj.value;
+	public setState(value: any) {
+		let arr = []
+		if (Object.prototype.toString.call(value) === "[object Array]") {
+			// console.log('value是数组');
+			arr = value
+		} else if (Object.prototype.toString.call(value) === '[object Object]') {
+			// console.log('value是对象');
+			arr.push(value)
+		}
+		arr.forEach((obj: any) => {
+			(this as any)[obj.state] = obj.value;
+		});
 	}
 
 	@Action

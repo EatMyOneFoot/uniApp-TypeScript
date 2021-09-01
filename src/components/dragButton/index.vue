@@ -24,11 +24,12 @@
             borderRadius: dragRadius,
             left: left,
             right: right,
+            backgroundColor: mainBgColor,
           }"
           @tap.stop="clickMain"
         >
           <u-icon
-            :name="showList ? 'grid-fill' : 'grid'"
+            :name="showList ? mainIcon[0] : mainIcon[1]"
             color="#ffffff"
             size="50"
           >
@@ -64,15 +65,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Model, Watch } from "vue-property-decorator";
 
 @Component({
-  name: "dragButton",
+  name: "DragButton",
 })
 export default class DragButton extends Vue {
+  /** 主按钮的背景颜色
+   * @param {String} value 颜色值
+   */
+  @Prop({
+    default: "#073f5a",
+  })
+  private mainBgColor!: string;
+
+  /** 主按钮的图标
+   * @param {Array<string>} string uView内置的字体图标名称，也可使用非大尺寸的图片
+   * 具体见https://www.uviewui.com/components/icon.html
+   */
+  @Prop({
+    default: () => {
+      return ["grid-fill", "grid"];
+    },
+  })
+  private mainIcon!: Array<string>;
+
   /** 按钮列表数据
-   * @param {Array<Object>}
-   * {name: "按钮名称", icon: "uView自带的字体图标名称",handleClick: 点击之后触发的事件}
+   * @param {Array<Object>} Object {name: "按钮名称", icon: "uView自带的字体图标名称",handleClick: 点击之后触发的事件}
    */
   @Prop({
     default: () => {
@@ -255,7 +274,6 @@ export default class DragButton extends Vue {
   width: 100rpx;
   height: 100rpx;
   padding: 15rpx;
-  background-color: #073f5a;
   transition-property: border-radius;
   transition-duration: 0.1s;
   position: absolute;

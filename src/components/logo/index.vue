@@ -14,20 +14,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Model } from "vue-property-decorator";
 import { UserModule } from "@/store/modules/user";
 
 @Component({
   name: "logo",
 })
 export default class logo extends Vue {
-  @Prop({ default: "" }) private title!: string;
+  @Model("change", { default: "" }) private title!: string;
 
   mounted() {
     UserModule.setState({ state: "name", value: "稳住哦" });
     console.log("mounted==>", UserModule.name);
     setTimeout(() => {
       UserModule.setState({ state: "name", value: "别浪" });
+      this.$emit("change", "World");
     }, 2 * 1000);
   }
 
@@ -36,11 +37,11 @@ export default class logo extends Vue {
   }
 
   private btnAClick() {
-    console.log("防抖，3秒==>", "别人封装好的用起来还是香啊");
+    console.log("%c防抖，3秒==> 别人封装好的用起来还是香啊", "color:red");
   }
 
   private click() {
-    console.log("节流，1秒==>", "别人封装好的用起来还是香啊");
+    console.log("%c节流，1秒==> 别人封装好的用起来还是香啊", "color:blue");
   }
 }
 </script>
