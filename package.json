@@ -59,7 +59,6 @@
     "core-js": "^3.6.5",
     "flyio": "^0.6.2",
     "luch-request": "^3.0.5",
-    "node-sass": "^4.14.1",
     "regenerator-runtime": "^0.12.1",
     "uview-ui": "^1.8.3",
     "vue": "^2.6.11",
@@ -90,6 +89,7 @@
     "mini-types": "*",
     "miniprogram-api-typings": "*",
     "postcss-comment": "^2.0.0",
+    "sass": "^1.45.1",
     "sass-loader": "^8.0.0",
     "typescript": "^3.6.4",
     "vue-template-compiler": "^2.6.11"
