@@ -276,6 +276,7 @@ export default class DragButton extends Vue {
   padding: 15rpx;
   transition-property: border-radius;
   transition-duration: 0.1s;
+  box-sizing: border-box;
   position: absolute;
   z-index: 2;
 
